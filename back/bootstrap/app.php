@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'success' => false,
                 'message' => 'Recurso não encontrado.',
-                'data' => null
+                'data' => null,
             ], 404);
         });
     })->create();
