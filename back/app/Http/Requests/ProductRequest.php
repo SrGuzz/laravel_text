@@ -26,7 +26,7 @@ class ProductRequest extends FormRequest
             'name' => 'required|min:3|max:30|string',
             'description' => 'required|string|min:10|max:255',
             'price' => 'required|numeric|min:0|regex:/^\d+(\.\d{1,2})?$/',
-            'quantity' => 'required|integer|min:0'
+            'quantity' => 'required|integer|min:0',
         ];
     }
 

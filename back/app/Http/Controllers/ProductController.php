@@ -16,24 +16,24 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(ProductFilterRequest $request) : JsonResponse
+    public function index(ProductFilterRequest $request): JsonResponse
     {
         return response()->json([
             'success' => true,
             'message' => 'Produtos listados com sucesso.',
-            'data' => $this->productService->list($request->validated())
+            'data' => $this->productService->list($request->validated()),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request) : JsonResponse
+    public function store(ProductRequest $request): JsonResponse
     {
         return response()->json([
             'success' => true,
             'message' => 'Produto criado com sucesso.',
-            'data' => $this->productService->create($request->validated())
+            'data' => $this->productService->create($request->validated()),
         ], 201);
     }
 
@@ -45,7 +45,7 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Produto encontrado com sucesso.',
-            'data' => $this->productService->find($id)
+            'data' => $this->productService->find($id),
         ]);
     }
 
@@ -57,7 +57,7 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Produto atualizado com sucesso.',
-            'data' => $this->productService->update($request->validated(), $id)
+            'data' => $this->productService->update($request->validated(), $id),
         ]);
     }
 
@@ -71,7 +71,7 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Produto removido com sucesso.',
-            'data' => null
+            'data' => null,
         ]);
     }
 }
