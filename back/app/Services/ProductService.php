@@ -3,12 +3,35 @@
 namespace App\Services;
 
 use App\Models\Product;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
-    public function list()
+    public function list(array $filters = []) : LengthAwarePaginator
     {
-        return Product::paginate(10);
+        $query = Product::query();
+
+        if (!empty($filters['name'])) {
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+
+        if (!empty($filters['min_price'])) {
+            $query->where('price', '>=', $filters['min_price']);
+        }
+
+        if (!empty($filters['max_price'])) {
+            $query->where('price', '<=', $filters['max_price']);
+        }
+
+        if (!empty($filters['min_quantity'])) {
+            $query->where('quantity', '>=', $filters['min_quantity']);
+        }
+
+        if (!empty($filters['max_quantity'])) {
+            $query->where('quantity', '<=', $filters['max_quantity']);
+        }
+
+        return $query->paginate(10);
     }
 
     public function find(int $id) : Product

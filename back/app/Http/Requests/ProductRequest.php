@@ -7,13 +7,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
 {
-    // /**
-    //  * Determine if the user is authorized to make this request.
-    //  */
-    // public function authorize(): bool
-    // {
-    //     return false;
-    // }
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -40,7 +40,7 @@ class ProductRequest extends FormRequest
             '*.min' => 'O campo :attribute deve ser no mínimo :min.',
             '*.max' => 'O campo :attribute deve ser no máximo :max.',
 
-            'preco.regex' => 'O preço deve ter no máximo 2 casas decimais.',
+            'price.regex' => 'O preço deve ter no máximo 2 casas decimais.',
         ];
     }
 

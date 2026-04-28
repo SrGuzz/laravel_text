@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductFilterRequest;
 use App\Http\Requests\ProductRequest;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
@@ -15,9 +16,13 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : JsonResponse
+    public function index(ProductFilterRequest $request) : JsonResponse
     {
-        return response()->json($this->productService->list());
+        return response()->json([
+            'success' => true,
+            'message' => 'Produtos listados com sucesso.',
+            'data' => $this->productService->list($request->validated())
+        ]);
     }
 
     /**
@@ -25,11 +30,10 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request) : JsonResponse
     {
-        $product = $this->productService->create($request->validated());
-
         return response()->json([
+            'success' => true,
             'message' => 'Produto criado com sucesso.',
-            'data' => $product
+            'data' => $this->productService->create($request->validated())
         ], 201);
     }
 
@@ -38,9 +42,11 @@ class ProductController extends Controller
      */
     public function show(int $id)
     {
-        $product = $this->productService->find($id);
-
-        return response()->json($product);
+        return response()->json([
+            'success' => true,
+            'message' => 'Produto encontrado com sucesso.',
+            'data' => $this->productService->find($id)
+        ]);
     }
 
     /**
@@ -48,11 +54,10 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, int $id): JsonResponse
     {
-        $product = $this->productService->update($request->validated(), $id);
-
         return response()->json([
+            'success' => true,
             'message' => 'Produto atualizado com sucesso.',
-            'data' => $product
+            'data' => $this->productService->update($request->validated(), $id)
         ]);
     }
 
@@ -64,7 +69,9 @@ class ProductController extends Controller
         $this->productService->delete($id);
 
         return response()->json([
-            'message' => 'Produto removido com sucesso.'
+            'success' => true,
+            'message' => 'Produto removido com sucesso.',
+            'data' => null
         ]);
     }
 }
