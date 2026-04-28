@@ -3,45 +3,61 @@
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class ProductService
 {
-    public function list(array $filters = []) : LengthAwarePaginator
+    private const CACHE_TTL = 300;
+    private const CACHE_PREFIX = 'products:list:';
+
+    public function list(array $filters = []) : array
     {
-        $query = Product::query();
+        $cacheKey = $this->makeListCacheKey($filters);
 
-        if (!empty($filters['name'])) {
-            $query->where('name', 'like', '%' . $filters['name'] . '%');
-        }
+        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($filters) {
 
-        if (!empty($filters['min_price'])) {
-            $query->where('price', '>=', $filters['min_price']);
-        }
+            $query = Product::query();
 
-        if (!empty($filters['max_price'])) {
-            $query->where('price', '<=', $filters['max_price']);
-        }
+            if (!empty($filters['name'])) {
+                $query->where('name', 'like', '%' . $filters['name'] . '%');
+            }
 
-        if (!empty($filters['min_quantity'])) {
-            $query->where('quantity', '>=', $filters['min_quantity']);
-        }
+            if (!empty($filters['min_price'])) {
+                $query->where('price', '>=', $filters['min_price']);
+            }
 
-        if (!empty($filters['max_quantity'])) {
-            $query->where('quantity', '<=', $filters['max_quantity']);
-        }
+            if (!empty($filters['max_price'])) {
+                $query->where('price', '<=', $filters['max_price']);
+            }
 
-        return $query->paginate(10);
+            if (!empty($filters['min_quantity'])) {
+                $query->where('quantity', '>=', $filters['min_quantity']);
+            }
+
+            if (!empty($filters['max_quantity'])) {
+                $query->where('quantity', '<=', $filters['max_quantity']);
+            }
+            return $query
+                ->orderBy('name')
+                ->paginate(10)
+                ->toArray();
+        });
     }
 
-    public function find(int $id) : Product
+    public function find(int $id) : array
     {
-        return Product::findOrFail($id);
+        return Cache::remember("products:show:{$id}", self::CACHE_TTL, function () use ($id) {
+            return Product::findOrFail($id)->toArray();
+        });
     }
 
     public function create(array $product) : Product
     {
-        return Product::create($product);
+        $data = Product::create($product);
+
+        $this->clearProductCache();
+
+        return $data;
     }
     
     public function update(array $data, int $id) : Product
@@ -49,11 +65,31 @@ class ProductService
         $product = Product::findOrFail($id);
         $product->update($data);
 
+        $this->clearProductCache();
+
         return $product;
     }
 
     public function delete(int $id)
     {
-        return Product::findOrFail($id)->delete();
+        $deleted = Product::findOrFail($id)->delete();
+
+        $this->clearProductCache();
+
+        return $deleted;
+    }
+
+    private function makeListCacheKey(array $filters): string
+    {
+        ksort($filters);
+
+        $page = request()->query('page', 1);
+
+        return self::CACHE_PREFIX . md5(json_encode($filters) . '|page=' . $page);
+    }
+
+    private function clearProductCache(): void
+    {
+        Cache::flush();
     }
 }
