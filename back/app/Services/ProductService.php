@@ -3,13 +3,12 @@
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductService
 {
     public function list()
     {
-        return Product::all()->paginate(10);
+        return Product::paginate(10);
     }
 
     public function find(int $id) : Product
@@ -22,9 +21,12 @@ class ProductService
         return Product::create($product);
     }
     
-    public function update(array $product, int $id) : Product
+    public function update(array $data, int $id) : Product
     {
-        return Product::findOrFail($id)->update($product);
+        $product = Product::findOrFail($id);
+        $product->update($data);
+
+        return $product;
     }
 
     public function delete(int $id)
