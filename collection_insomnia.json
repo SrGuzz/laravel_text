@@ -1,0 +1,198 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_source": "insomnia.desktop.app",
+  "resources": [
+    {
+      "_id": "wrk_products_api",
+      "_type": "workspace",
+      "name": "Products API - Estruturado"
+    },
+    {
+      "_id": "env_products_api",
+      "_type": "environment",
+      "parentId": "wrk_products_api",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://127.0.0.1:8000/api"
+      }
+    },
+
+    {
+      "_id": "fld_valid",
+      "_type": "request_group",
+      "parentId": "wrk_products_api",
+      "name": "✅ Válidos"
+    },
+    {
+      "_id": "req_list_products",
+      "_type": "request",
+      "parentId": "fld_valid",
+      "name": "Listar produtos",
+      "method": "GET",
+      "url": "{{ _.base_url }}/products",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ]
+    },
+
+    {
+      "_id": "req_show_product",
+      "_type": "request",
+      "parentId": "fld_valid",
+      "name": "Buscar produto por ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/products/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ]
+    },
+
+    {
+      "_id": "req_create_product",
+      "_type": "request",
+      "parentId": "fld_valid",
+      "name": "Criar produto",
+      "method": "POST",
+      "url": "{{ _.base_url }}/products",
+      "headers": [
+        { "name": "Accept", "value": "application/json" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Mouse Gamer\",\n  \"quantity\": 10,\n  \"price\": 150.90,\n  \"description\": \"Mouse RGB de alta precisão\"\n}"
+      }
+    },
+
+    {
+      "_id": "req_update_product",
+      "_type": "request",
+      "parentId": "fld_valid",
+      "name": "Atualizar produto",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/products/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Mouse Gamer PRO\",\n  \"quantity\": 5,\n  \"price\": 200.00,\n  \"description\": \"Versão atualizada\"\n}"
+      }
+    },
+
+    {
+      "_id": "req_delete_product",
+      "_type": "request",
+      "parentId": "fld_valid",
+      "name": "Deletar produto",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/products/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ]
+    },
+
+    {
+      "_id": "fld_invalid",
+      "_type": "request_group",
+      "parentId": "wrk_products_api",
+      "name": "❌ Inválidos (Validação)"
+    },
+
+    {
+      "_id": "req_invalid_name",
+      "_type": "request",
+      "parentId": "fld_invalid",
+      "name": "Erro - name obrigatório",
+      "method": "POST",
+      "url": "{{ _.base_url }}/products",
+      "headers": [
+        { "name": "Accept", "value": "application/json" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"quantity\": 10,\n  \"price\": 100\n}"
+      }
+    },
+
+    {
+      "_id": "req_invalid_price",
+      "_type": "request",
+      "parentId": "fld_invalid",
+      "name": "Erro - price negativo",
+      "method": "POST",
+      "url": "{{ _.base_url }}/products",
+      "headers": [
+        { "name": "Accept", "value": "application/json" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Produto\",\n  \"quantity\": 5,\n  \"price\": -10\n}"
+      }
+    },
+
+    {
+      "_id": "req_invalid_quantity",
+      "_type": "request",
+      "parentId": "fld_invalid",
+      "name": "Erro - quantity inválido",
+      "method": "POST",
+      "url": "{{ _.base_url }}/products",
+      "headers": [
+        { "name": "Accept", "value": "application/json" },
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Produto\",\n  \"quantity\": \"abc\",\n  \"price\": 100\n}"
+      }
+    },
+
+    {
+      "_id": "fld_filters",
+      "_type": "request_group",
+      "parentId": "wrk_products_api",
+      "name": "🔍 Filtros"
+    },
+
+    {
+      "_id": "req_filter_name",
+      "_type": "request",
+      "parentId": "fld_filters",
+      "name": "Filtro por nome",
+      "method": "GET",
+      "url": "{{ _.base_url }}/products?name=mouse",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ]
+    },
+
+    {
+      "_id": "req_filter_price",
+      "_type": "request",
+      "parentId": "fld_filters",
+      "name": "Filtro por preço",
+      "method": "GET",
+      "url": "{{ _.base_url }}/products?min_price=50&max_price=200",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ]
+    },
+
+    {
+      "_id": "req_filter_combined",
+      "_type": "request",
+      "parentId": "fld_filters",
+      "name": "Filtro combinado",
+      "method": "GET",
+      "url": "{{ _.base_url }}/products?name=mouse&min_price=50&max_price=200&min_quantity=1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ]
+    }
+  ]
+}
