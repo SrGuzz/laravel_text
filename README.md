@@ -12,6 +12,7 @@ API desenvolvida em Laravel para gerenciamento de produtos (CRUD), com listagem 
 ## Estrutura do projeto
 
 - `back/`: aplicação Laravel (backend da API)
+- `front/`: aplicação React + Vite (frontend)
 - `collection_insomnia.json`: coleção de requisições para teste da API no Insomnia
 - `respostas.md`: respostas teóricas solicitadas no desafio
 
@@ -24,14 +25,13 @@ git clone <url-do-repositorio>
 cd laravel_text
 ```
 
-### 2. Instalar dependências
+### 2. Instalar dependências do backend
 
 Entre na pasta do backend e instale as dependências PHP e JS:
 
 ```bash
 cd back
 composer install
-npm install
 ```
 
 ### 3. Configurar ambiente
@@ -69,7 +69,7 @@ php artisan migrate
 
 Isso criará as tabelas padrão do Laravel e a tabela de produtos.
 
-### 5. Inicializar a aplicação
+### 5. Inicializar o backend
 
 Em um terminal, inicie o servidor da API:
 
@@ -77,9 +77,13 @@ Em um terminal, inicie o servidor da API:
 php artisan serve
 ```
 
-Opcionalmente, em outro terminal, suba o Vite para assets front-end:
+### 6. Rodar o frontend
+
+Em outro terminal, entre na pasta `front`, instale as dependências e inicie o servidor:
 
 ```bash
+cd front
+npm install
 npm run dev
 ```
 
@@ -87,6 +91,14 @@ A API ficará disponível em:
 
 - `http://127.0.0.1:8000`
 - Endpoints de produto: `http://127.0.0.1:8000/api/products`
+
+O frontend ficará disponível em:
+
+- `http://127.0.0.1:8080`
+
+Observação:
+
+- O frontend já está configurado para usar proxy em `/api`, então ele se comunica com o backend Laravel em `http://127.0.0.1:8000`.
 
 ## Rotas principais da API
 
