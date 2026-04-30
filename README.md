@@ -1,4 +1,4 @@
-﻿# laravel_text
+﻿# laravel_test
 
 API desenvolvida em Laravel para gerenciamento de produtos (CRUD), com listagem paginada, filtros e cache.
 
@@ -22,7 +22,7 @@ API desenvolvida em Laravel para gerenciamento de produtos (CRUD), com listagem 
 
 ```bash
 git clone <url-do-repositorio>
-cd laravel_text
+cd laravel_test
 ```
 
 ### 2. Instalar dependências do backend
